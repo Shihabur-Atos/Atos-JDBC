@@ -11,8 +11,8 @@ public class Runner {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
-		CRUDqueries query = new CRUDqueries();
-		query.closeConn();
+		Choice start = new Choice();
+		start.options();
 		
 	}
 
