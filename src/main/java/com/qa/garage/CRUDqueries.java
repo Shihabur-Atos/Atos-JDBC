@@ -2,6 +2,7 @@ package com.qa.garage;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -16,6 +17,7 @@ public class CRUDqueries {
 
 	private Connection conn;// has a driver manager class which contains the methods to connect to db
 	private Statement stmt;// allows us to prepare the query we want to execute
+	private ResultSet rs; // Crucial for when returning multiple rows from a database table
 
 	// open connection in the constructor - initialises everything
 	public CRUDqueries() {
@@ -29,14 +31,16 @@ public class CRUDqueries {
 		}
 	}
 
-	// Need a way to run our queries - call specific methods from the Statament
+	// Need a way to run our queries - call specific methods from the Statement
 	// class
 	// - executeQuery - retrieves info -> READ
 	// - executeUpdate - passes into through and returns nothing -> CREATE, UPDATE,
 	// DELETE
 
 	// CREATE - INSERT INTO .... -> returns nothing, just says "query ok"
-	public void create(String model, int mileage, String vehicleType, int doors) {
+	public void create(Vehicle v) {
+
+//	public void create(String model, int mileage, String vehicleType, int doors) {
 		// info to collect to pass into the database
 //		String model = "xxx";
 //		int mileage = 1234;
@@ -45,8 +49,8 @@ public class CRUDqueries {
 
 		// INSERT INTO vehicle(model, mileage, vehicle_type, doors)
 		// VALUES("tbc",30000,"Car",4);
-		String createStmt = "INSERT INTO vehicle(model, mileage, vehicle_type, doors) VALUES('" + model + "'," + mileage
-				+ ",'" + vehicleType + "'," + doors + ");";
+		String createStmt = "INSERT INTO vehicle(model, mileage, vehicle_type, doors) VALUES('" + v.getModel() + "'," + v.getMileage()
+				+ ",'" + v.getVehicleType() + "'," + v.getDoors() + ");";
 		try {
 			stmt.executeUpdate(createStmt);
 			System.out.println("Create statement executed");
@@ -58,16 +62,48 @@ public class CRUDqueries {
 
 	// READ - SELECT ..... -> executeQuery
 	public void read() {
+		String readStmt = "SELECT * FROM vehicle;";
+		try {
+			rs = stmt.executeQuery(readStmt);
+			while (rs.next()) {
+				System.out.println("ID: " + rs.getInt("id"));
+				System.out.println("Model: " + rs.getString("model"));
+				System.out.println("Mileage: " + rs.getInt("mileage"));
+				System.out.println("Vehicle type: " + rs.getString("vehicle_type"));
+				System.out.println("Doors: " + rs.getInt("doors"));
+			}
 
+		} catch (SQLException e) {
+			System.out.println("Bad query");
+			e.printStackTrace();
+		}
 	}
 
 	// UPDATE - UPDATE ..... -> executeUpdate
-	public void update() {
+	public void update(int id, String updateVal) {
+//		UPDATE vehicle SET model = "chevy" WHERE id = 2;
+		String updateStmt = "UPDATE vehicle SET model = '" + updateVal + "' WHERE id = " + id + ";";
+		try {
+			stmt.executeUpdate(updateStmt);
+			System.out.println("Update statement executed");
+			
+		}catch (SQLException e) {
+			System.out.println("Bad query");
+			e.printStackTrace();
+		}
 
 	}
 
 	// DELETE - DELETE ..... -> executeUpdate
-	public void delete() {
+	public void delete(int id) {
+		String delStmt = "DELETE FROM vehicle WHERE id=" + id + ";";
+		try {
+			stmt.executeUpdate(delStmt);
+			System.out.println("Delete statement executed");
+		} catch (SQLException e) {
+			System.out.println("Bad query");
+			e.printStackTrace();
+		}
 
 	}
 

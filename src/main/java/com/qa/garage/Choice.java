@@ -5,6 +5,7 @@ import java.util.Scanner;
 public class Choice {
 
 	private static Scanner sc = new Scanner(System.in);
+	Vehicle veh;
 
 	public String getInput() {
 		System.out.println("Enter CRUD choice: ");
@@ -29,6 +30,7 @@ public class Choice {
 				case "create":
 					System.out.println("Enter model: ");
 					String mod = sc.nextLine();
+					veh.setModel(mod);
 					System.out.println("Enter mileage: ");
 					int miles = sc.nextInt();
 					sc.nextLine();
@@ -37,16 +39,24 @@ public class Choice {
 					System.out.println("Enter doors: ");
 					int door = sc.nextInt();
 					sc.nextLine();
-					q.create(mod, miles, vType, door);
+					q.create(new Vehicle(mod, miles, vType, door));
 					break;
 				case "read":
-					// add code to call read method
+					q.read();
 					break;
 				case "update":
-					// add code to call update method
+					System.out.println("Enter id of record to update: ");
+					int uid = sc.nextInt();
+					sc.nextLine();//capture enter key
+					System.out.println("Enter the new model of the vehicle: ");
+					String nModel = sc.nextLine();
+					q.update(uid, nModel);					
 					break;
 				case "delete":
-					// add code to call delete method
+					System.out.println("Enter id of record to delete: ");
+					int id = sc.nextInt();
+					sc.nextLine();//capture enter key
+					q.delete(id);
 					break;
 				default:
 					System.out.println("Invalid CRUD choice");
