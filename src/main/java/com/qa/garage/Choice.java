@@ -20,7 +20,7 @@ public class Choice {
 		// result in the crud variable
 		String crud = getInput();
 
-		// try-finally block so the finally block can close the connection
+		// try-finally block so the final block can close the connection
 		try {
 			// do-while loop to start the loop and present the options to interact with the
 			// database
@@ -44,19 +44,25 @@ public class Choice {
 				case "read":
 					q.read();
 					break;
+				case "readbyID":
+					System.out.println("Enter ID for vehicle: ");
+					int rid = sc.nextInt();
+					sc.nextLine();
+					q.readByID(new Vehicle(rid,"",0,null,0));
+					break;
 				case "update":
 					System.out.println("Enter id of record to update: ");
 					int uid = sc.nextInt();
 					sc.nextLine();//capture enter key
 					System.out.println("Enter the new model of the vehicle: ");
 					String nModel = sc.nextLine();
-					q.update(uid, nModel);					
+					q.update(new Vehicle(uid, nModel, 0, null ,0));
 					break;
 				case "delete":
 					System.out.println("Enter id of record to delete: ");
 					int id = sc.nextInt();
 					sc.nextLine();//capture enter key
-					q.delete(id);
+					q.delete(new Vehicle(id,"",0,null,0));
 					break;
 				default:
 					System.out.println("Invalid CRUD choice");

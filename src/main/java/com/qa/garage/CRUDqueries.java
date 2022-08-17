@@ -79,24 +79,33 @@ public class CRUDqueries {
 		}
 	}
 
+	public void readByID(Vehicle v) {
+		String readStatement = "SELECT * FROM vehicle WHERE id = " + v.getId() + ";";
+		try {
+			stmt.executeQuery(readStatement);
+		} catch (SQLException e) {
+			System.out.println("Bad Query");
+			e.printStackTrace();
+		}
+	}
+
 	// UPDATE - UPDATE ..... -> executeUpdate
-	public void update(int id, String updateVal) {
+	public void update(Vehicle v) {
 //		UPDATE vehicle SET model = "chevy" WHERE id = 2;
-		String updateStmt = "UPDATE vehicle SET model = '" + updateVal + "' WHERE id = " + id + ";";
+		String updateStmt = "UPDATE vehicle SET model = '" + v.getModel() + "' WHERE id = " + v.getId() + ";";
 		try {
 			stmt.executeUpdate(updateStmt);
 			System.out.println("Update statement executed");
 			
-		}catch (SQLException e) {
+		} catch (SQLException e) {
 			System.out.println("Bad query");
 			e.printStackTrace();
 		}
-
 	}
 
 	// DELETE - DELETE ..... -> executeUpdate
-	public void delete(int id) {
-		String delStmt = "DELETE FROM vehicle WHERE id=" + id + ";";
+	public void delete(Vehicle v) {
+		String delStmt = "DELETE FROM vehicle WHERE id=" + v.getId() + ";";
 		try {
 			stmt.executeUpdate(delStmt);
 			System.out.println("Delete statement executed");
